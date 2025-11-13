@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mining Block</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+    background: #1e3c72;
+    color: white;
+}
+
+body {
+    padding-top: 100px; /* Keep this for nav spacing */
+}
+
+
+    nav {
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 20px;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    nav .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 30px;
+      text-align: center;
+      flex: 1;
+    }
+
+    .loader {
+      border: 8px solid rgba(255, 255, 255, 0.2);
+      border-top: 8px solid #43cea2;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 30px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .block {
+      background: rgba(0, 0, 0, 0.8);
+      border-left: 5px solid #43cea2;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+      text-align: left;
+    }
+
+    .block h3 {
+      color: #43cea2;
+      margin-top: 0;
+    }
+
+    .tx {
+      background: rgba(67, 206, 162, 0.1);
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .label {
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    .success {
+      color: #43cea2;
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .footer {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px 20px;
+      text-align: center;
+      color: white;
+      font-size: 14px;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">Blockchain Technology</div>
+  </nav>
+
+  <div class="container">
+    <h2>⛏ Mining in Progress...</h2>
+    <div class="loader" id="loader"></div>
+
+    <div id="result-section" style="display: none;">
+      <div class="success">✅ Block Mined Successfully!</div>
+      <div class="block" id="block-data"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    &copy; 2025 Blockchain for Secure Transactions | All rights reserved.
+  </div>
+
+  <script>
+    fetch('/mine_block_api')
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          const block = data.block_details;
+          let content = `<h3>Block #${block.index}</h3>
+                         <p><span class="label">Timestamp:</span> ${block.timestamp}</p>
+                         <p><span class="label">Proof:</span> ${block.proof}</p>
+                         <p><span class="label">Previous Hash:</span> ${block.previous_hash}</p>
+                         <p><span class="label">Transactions:</span></p>`;
+          
+          if (block.transactions.length > 0) {
+            block.transactions.forEach(tx => {
+              content += `<div class="tx">
+                            <p><span class="label">Sender:</span> ${tx.sender}</p>
+                            <p><span class="label">Receiver:</span> ${tx.receiver}</p>
+                            <p><span class="label">Amount:</span> ${tx.amount}</p>
+                          </div>`;
+            });
+          } else {
+            content += `<p>No transactions in this block.</p>`;
+          }
+
+          document.getElementById('block-data').innerHTML = content;
+          document.getElementById('loader').style.display = 'none';
+          document.querySelector('.container h2').textContent = '';
+          document.getElementById('result-section').style.display = 'block';
+        } else {
+          document.querySelector('.container h2').textContent = '❌ Error mining block.';
+          document.getElementById('loader').style.display = 'none';
+        }
+      });
+  </script>
+</body>
+</html>

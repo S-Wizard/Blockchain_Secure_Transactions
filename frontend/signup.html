@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Stellar Blockchain</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Existing styles remain unchanged */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .signup-container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+        .signup-container h1 {
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .signup-container input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+        }
+        .signup-container select {
+            width: 50%; /* Gender dropdown width set to 50% */
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+        }
+        .signup-container input:focus, .signup-container select:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .signup-container button {
+            padding: 12px 20px;
+            font-size: 16px;
+            color: white;
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        .signup-container button:hover {
+            background: linear-gradient(135deg, #185a9d, #43cea2);
+            transform: scale(1.05);
+        }
+        .background-animation div {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-30px) scale(1.1);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+            }
+        }
+        .background-animation div:nth-child(1) { top: 15%; left: 20%; animation-delay: 0s; }
+        .background-animation div:nth-child(2) { top: 35%; left: 70%; animation-delay: 2s; }
+        .background-animation div:nth-child(3) { top: 55%; left: 40%; animation-delay: 4s; }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2a5298;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            color: white;
+        }
+        .popup.active {
+            display: block;
+        }
+        .popup button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: #43cea2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        async function handleSignup(event) {
+            event.preventDefault();
+
+            const formData = {
+                username: document.querySelector("[name='username']").value,
+                email: document.querySelector("[name='email']").value,
+                password: document.querySelector("[name='password']").value,
+                confirmPassword: document.querySelector("[name='confirm_password']").value,
+                address: document.querySelector("[name='address']").value,
+                gender: document.querySelector("[name='gender']").value,
+            };
+
+            if (formData.password !== formData.confirmPassword) {
+                showPopup("Passwords do not match!", false);
+                return false;
+            }
+
+            try {
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showPopup(result.message || "Signup successful!", true, "/login_page");
+                } else {
+                    showPopup(result.message || "Signup failed. Please try again.", false);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                showPopup("An unexpected error occurred.", false);
+            }
+        }
+
+        function showPopup(message, isSuccess, redirectUrl = null) {
+            const popup = document.getElementById("popup");
+            popup.textContent = message;
+            popup.style.backgroundColor = isSuccess ? "#43cea2" : "#d9534f";
+            popup.classList.add("active");
+
+            setTimeout(() => {
+                popup.classList.remove("active");
+                if (isSuccess && redirectUrl) {
+                    window.location.href = redirectUrl;
+                }
+            }, 3000);
+        }
+    </script>
+</head>
+<body>
+    <div class="background-animation">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <div class="signup-container">
+        <h1>Create Account</h1>
+        <form onsubmit="handleSignup(event)">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password (min 6 chars)" required>
+            <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+            <input type="text" name="address" placeholder="Address" required>
+            <select name="gender" required>
+                <option value="" disabled selected>Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <div id="popup" class="popup"></div>
+
+    <div class="footer">
+        &copy; 2025 Blockchain for Secure Transactions | All rights reserved.
+    </div>
+</body>
+</html>

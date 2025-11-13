@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Stellar Blockchain</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Your original styles remain unchanged */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-container h1 {
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+        }
+
+        .login-container input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .login-container button {
+            padding: 12px 20px;
+            font-size: 16px;
+            color: white;
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .login-container button:hover {
+            background: linear-gradient(135deg, #185a9d, #43cea2);
+            transform: scale(1.05);
+        }
+
+        .background-animation div {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-30px) scale(1.1);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .background-animation div:nth-child(1) { top: 15%; left: 20%; animation-delay: 0s; }
+        .background-animation div:nth-child(2) { top: 35%; left: 70%; animation-delay: 2s; }
+        .background-animation div:nth-child(3) { top: 55%; left: 40%; animation-delay: 4s; }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2a5298;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            color: white;
+        }
+
+        .popup.active {
+            display: block;
+        }
+
+        .popup button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: #43cea2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <div class="login-container">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div id="popup" class="popup"></div>
+
+    <div class="footer">
+        &copy; 2025 Blockchain for Secure Transactions | All rights reserved.
+    </div>
+
+    <script>
+        const loginForm = document.getElementById("loginForm");
+
+        loginForm.addEventListener("submit", async function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(loginForm);
+            const data = {
+                username: formData.get("username"),
+                password: formData.get("password"),
+            };
+
+            try {
+                const response = await fetch("/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    showPopup(result.message, true); // Success popup
+                    setTimeout(() => {
+                        window.location.href = "/dashboard"; // Redirect to dashboard
+                    }, 3000);
+                } else {
+                    showPopup(result.message || "Login failed. Please try again.", false); // Error popup
+                }
+            } catch (error) {
+                console.error("Login error:", error);
+                showPopup("An error occurred. Please try again.", false);
+            }
+        });
+
+        function showPopup(message, isSuccess) {
+            const popup = document.getElementById("popup");
+            popup.textContent = message;
+            popup.style.backgroundColor = isSuccess ? "#43cea2" : "#d9534f";
+            popup.classList.add("active");
+            setTimeout(() => popup.classList.remove("active"), 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pending Transactions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Roboto', sans-serif;
+      background: #1e3c72;
+      color: white;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 20px;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    nav .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 120px 20px 40px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #43cea2;
+      margin-bottom: 40px;
+    }
+
+    .transaction {
+      background: rgba(0, 0, 0, 0.8);
+      border-left: 5px solid #43cea2;
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    .transaction p {
+      margin: 8px 0;
+    }
+
+    .transaction strong {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .no-tx {
+      text-align: center;
+      font-size: 18px;
+      color: #ccc;
+    }
+
+    .footer {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px 20px;
+      text-align: center;
+      color: white;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">Blockchain Technology</div>
+  </nav>
+
+  <div class="content">
+    <div class="container">
+      <h2>🕒 Pending Transactions</h2>
+
+      {% if transactions %}
+        {% for tx in transactions %}
+          <div class="transaction">
+            <p><strong>Sender:</strong> {{ tx.sender }}</p>
+            <p><strong>Receiver:</strong> {{ tx.receiver }}</p>
+            <p><strong>Amount:</strong> ₹{{ tx.amount }}</p>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="no-tx">No pending transactions currently.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="footer">
+    &copy; 2025 Blockchain for Secure Transactions | All rights reserved.
+  </div>
+</body>
+</html>

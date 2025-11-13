@@ -1,0 +1,9 @@
+flask
+flask_jwt_extended
+bcrypt
+requests
+datetime
+hashlib
+json
+os
+logging

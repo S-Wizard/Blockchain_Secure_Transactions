@@ -1,0 +1,7 @@
+[
+    "http://node1.localhost:5000",
+    "http://node2.localhost:5001",
+    "http://node3.localhost:5002",
+    "http://node4.localhost:5003",
+    "http://node1.localhost:5003"
+]

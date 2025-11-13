@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Network Info</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #1e3c72;
+      color: white;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      max-width: 600px;
+      width: 90%;
+      border-left: 5px solid #43cea2;
+    }
+
+    h2 {
+      color: #d8d8d8;
+      margin-bottom: 30px;
+    }
+
+    .info-box {
+      margin: 20px 0;
+      padding: 20px;
+      background-color: rgba(67, 206, 162, 0.1);
+      border-radius: 10px;
+      font-size: 1.2rem;
+      color: #ffffff;
+    }
+
+    .info-box span {
+      font-weight: bold;
+      color: #43cea2;
+    }
+
+    a.back-btn {
+      display: inline-block;
+      margin-top: 25px;
+      text-decoration: none;
+      background: #d5d5d5;
+      color: #1e3c72;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    a.back-btn:hover {
+      background: #36b895;
+    }
+
+    .footer {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px 20px;
+      text-align: center;
+      color: white;
+      font-size: 14px;
+      margin-top: auto;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Blockchain Network Information</h2>
+
+    <div class="info-box">
+      <span>Total Blocks:</span> {{ network.total_blocks }}
+    </div>
+
+    <div class="info-box">
+      <span>Pending Transactions:</span> {{ network.pending_transactions }}
+    </div>
+
+    <a href="/dashboard" class="back-btn">⬅ Back to Dashboard</a>
+  </div>
+
+  <div class="footer">
+    &copy; 2025 Blockchain for Secure Transactions | All rights reserved.
+  </div>
+</body>
+</html>

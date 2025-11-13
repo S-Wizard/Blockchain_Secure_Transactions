@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transaction History - Blockchain Secure Transactions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #1e3c72;
+      color: white;
+    }
+    nav {
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 20px;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    nav .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+    }
+    nav .nav-links {
+      display: flex;
+      gap: 15px;
+    }
+    nav .nav-links a {
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      color: white;
+      padding: 8px 15px;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+    nav .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: white;
+    }
+    .container {
+      margin: 150px auto;
+      max-width: 800px;
+      padding: 30px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 15px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+    }
+    .container h2 {
+      margin-bottom: 20px;
+      font-size: 30px;
+      color: #43cea2;
+      text-align: center;
+    }
+    .balance-info {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    .transaction-list {
+      margin: 20px 0;
+      list-style: none;
+      padding: 0;
+    }
+    .transaction-item {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+    .transaction-item span {
+      font-size: 16px;
+      font-weight: 500;
+      color: #fff;
+    }
+    .transaction-item .amount {
+      font-weight: bold;
+      color: #43cea2;
+    }
+    .footer {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px 20px;
+      text-align: center;
+      color: white;
+      font-size: 14px;
+      position: relative;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">Blockchain Technology</div>
+    <div class="nav-links">
+      <a href="/deposit">Deposit</a>
+      <a href="/send_amount">Send</a>
+      <a href="/transactions">Transactions</a>
+      <a href="/" onclick="return confirm('Are you sure you want to log out?');">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2>Transaction History</h2>
+    <div class="balance-info">
+      Current Balance: {{ user.balance }} INR
+    </div>
+    <ul class="transaction-list">
+      {% if transactions and transactions|length > 0 %}
+        {% for transaction in transactions %}
+          <li class="transaction-item">
+            {% if transaction.sender == "SYSTEM" %}
+              <!-- For deposit transactions -->
+              <span>
+                Self Deposit
+                {% if transaction.pending %}
+                  <br><small style="color: #ffcc00;">(Pending Transaction)</small>
+                {% endif %}
+                <br>
+                {% if transaction.timestamp %}
+                  <small style="color: #bbb;">{{ transaction.timestamp }}</small>
+                {% else %}
+                  <small style="color: #bbb;">N/A</small>
+                {% endif %}
+              </span>
+            {% else %}
+              <!-- For send transactions -->
+              <span>
+                From: {{ transaction.sender }}<br>
+                To: {{ transaction.receiver }}
+                {% if transaction.pending %}
+                  <br><small style="color: #ffcc00;">(Pending Transaction)</small>
+                {% endif %}
+                <br>
+                {% if transaction.timestamp %}
+                  <small style="color: #bbb;">{{ transaction.timestamp }}</small>
+                {% else %}
+                  <small style="color: #bbb;">N/A</small>
+                {% endif %}
+              </span>
+            {% endif %}
+            <span class="amount">{{ "%.2f"|format(transaction.amount) }} INR</span>
+          </li>
+        {% endfor %}
+      {% else %}
+        <li style="text-align: center; color: white;">No transactions found.</li>
+      {% endif %}
+    </ul>
+  </div>
+
+  <div class="footer">
+    &copy; 2025 Blockchain for Secure Transactions | All rights reserved.
+  </div>
+</body>
+</html>

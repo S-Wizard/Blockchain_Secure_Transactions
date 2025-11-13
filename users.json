@@ -1,0 +1,23 @@
+{
+    "testuser": {
+        "password": "$2b$12$yM72RANmKpCkSPFDNrMXjuCdoELIx8uvAdb6vwuOVS0aSoZ5JX7aC",
+        "email": "testuser@gmail.com",
+        "address": "bgl",
+        "gender": "male",
+        "balance": 0
+    },
+    "user1": {
+        "password": "$2b$12$sjcEBkJR3RBvU5tvngSI1.RH1k/3oxaSUVJptPteTWthb8ralK6bW",
+        "email": "useR@gmail.com",
+        "address": "bgp",
+        "gender": "female",
+        "balance": 180.0
+    },
+    "user2": {
+        "password": "$2b$12$x9fd5bygKO3shLu5IQoaDOGgOi3kJdnfuS4pV5kzEXt9wgUfGcTy.",
+        "email": "user2@gmail.com",
+        "address": "cbpur",
+        "gender": "male",
+        "balance": 20.0
+    }
+}

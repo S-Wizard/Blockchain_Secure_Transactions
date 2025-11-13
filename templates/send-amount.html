@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Amount - Blockchain Secure Transactions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #1e3c72;
+            color: white;
+        }
+
+        nav {
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav .nav-links a {
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            color: white;
+            padding: 8px 15px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        nav .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+        }
+
+        .container {
+            margin: 150px auto;
+            max-width: 500px;
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        .container h2 {
+            margin-bottom: 20px;
+            font-size: 30px;
+            color: #43cea2;
+        }
+
+        .form-group {
+            margin: 20px 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #43cea2;
+            box-shadow: 0 0 5px rgba(67, 206, 162, 0.8);
+        }
+
+        .btn {
+            padding: 15px 20px;
+            font-size: 18px;
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #185a9d, #43cea2);
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            position: relative;
+            margin-top: 30px;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        .success {
+            color: #43cea2;
+        }
+
+        .error {
+            color: #ff4d4d;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Blockchain Technology</div>
+        <div class="nav-links">
+            <a href="/deposit">Deposit</a>
+            <a href="/send_amount">Send</a>
+            <a href="/transactions">Transactions</a>
+            <a href="/" onclick="return confirm('Are you sure you want to log out?');">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Send Amount</h2>
+        <form id="send-amount-form" method="POST" action="/send_amount">
+            <div class="form-group">
+                <label for="receiver">Receiver's Username:</label>
+                <input type="text" id="receiver" name="receiver" placeholder="Enter receiver's username" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount to Send:</label>
+                <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
+            </div>
+            <button type="submit" class="btn">Send</button>
+            <p class="message" id="response-message"></p>
+        </form>
+    </div>
+
+    <div class="footer">
+        &copy; 2025 Blockchain for Secure Transactions | All rights reserved.
+    </div>
+
+    <script>
+        const form = document.getElementById('send-amount-form');
+        const responseMessage = document.getElementById('response-message');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    responseMessage.textContent = result.message || 'Amount sent successfully!';
+                    responseMessage.className = 'message success';
+                } else {
+                    responseMessage.textContent = result.message || 'Failed to send amount. Please try again.';
+                    responseMessage.className = 'message error';
+                }
+            } catch (error) {
+                responseMessage.textContent = 'An error occurred. Please try again later.';
+                responseMessage.className = 'message error';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blockchain Viewer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #1e3c72;
+            color: white;
+            padding-top: 100px;
+        }
+
+        nav {
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #43cea2;
+            margin-bottom: 40px;
+        }
+
+        .block {
+            background: rgba(0, 0, 0, 0.8);
+            border-left: 5px solid #43cea2;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        .block h2 {
+            margin-top: 0;
+            color: #43cea2;
+        }
+
+        .tx {
+            background: rgba(67, 206, 162, 0.1);
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .label {
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Blockchain Technology</div>
+        
+    </nav>
+
+    <div class="container">
+        <h1>Digital Ledger</h1>
+
+        {% for block in chain %}
+        <div class="block">
+            <h2>Block #{{ block.index }}</h2>
+            <p><span class="label">Timestamp:</span> {{ block.timestamp }}</p>
+            <p><span class="label">Proof:</span> {{ block.proof }}</p>
+            <p><span class="label">Previous Hash:</span> {{ block.previous_hash }}</p>
+            <p><span class="label">Transactions:</span></p>
+            {% for tx in block.transactions %}
+                <div class="tx">
+                    <p><span class="label">Sender:</span> {{ tx.sender }}</p>
+                    <p><span class="label">Receiver:</span> {{ tx.receiver }}</p>
+                    <p><span class="label">Amount:</span> {{ tx.amount }}</p>
+                </div>
+            {% else %}
+                <p>No transactions in this block.</p>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="footer">
+        &copy; 2025 Blockchain for Secure Transactions | All rights reserved.
+    </div>
+</body>
+</html>
